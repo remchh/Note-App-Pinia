@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import PageNotes from '@/pages/PageNotes.vue'
 import PageEditNote from '@/pages/PageEditNote.vue'
 import PageStats from '@/pages/PageStats.vue'
+import PageAuth from '@/pages/PageAuth.vue'
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: '/stats',
     name: 'stats',
     component: PageStats
+  },
+  {
+    path: '/auth',
+    name: 'auth',
+    component: PageAuth
   }
 ]
 

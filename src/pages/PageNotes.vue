@@ -46,13 +46,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Note from '@/components/Notes/Note.vue'
 import AddEditNote from '@/components/Notes/AddEditNote.vue'
 import { useStoreNotes } from '@/stores/storeNotes'
 import { useWatchCharacters } from '@/use/useWatchCharacters'
 
 const storeNotes = useStoreNotes()
+
+onMounted(() => {
+  storeNotes.getNotes()
+})
 
 const newNote = ref('')
 
