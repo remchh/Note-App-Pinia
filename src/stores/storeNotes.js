@@ -1,13 +1,16 @@
 import { defineStore } from 'pinia'
 import { db } from '@/js/firebase'
 import { collection, onSnapshot, doc, deleteDoc, updateDoc, query, orderBy, addDoc } from "firebase/firestore"
+import { useStoreAuth } from '@/stores/storeAuth'
 
 
-const notesCollectionRef = collection(db, "notes")
+let notesCollectionRef 
 
-const notesCollectionQuery = query(notesCollectionRef, orderBy("date", "desc"))
+let notesCollectionQuery 
 
-export const useStoreNotes = defineStore('counter', {
+let getNotesSnapshot = null
+
+export const useStoreNotes = defineStore('storeNotes', {
   //state is only for storing data
   state: () => {
     return { 
@@ -26,9 +29,15 @@ export const useStoreNotes = defineStore('counter', {
   },
   //actions are just methods that allow us to access data to our state and modify it
   actions: {
+    init() {
+      const storeAuth = useStoreAuth()
+      notesCollectionRef = collection(db, "users", storeAuth.user.id, "notes")
+      notesCollectionQuery = query(notesCollectionRef, orderBy("date", "desc"))
+      this.getNotes()
+    },
     async getNotes() {
       this.notesLoaded = false
-      onSnapshot(notesCollectionQuery, (querySnapshot) => {
+      getNotesSnapshot = onSnapshot(notesCollectionQuery, (querySnapshot) => {
         let notes = []
         querySnapshot.forEach((doc) => {
           let note = {
@@ -40,7 +49,13 @@ export const useStoreNotes = defineStore('counter', {
         })
         this.notes = notes
         this.notesLoaded = true
+      }, error => {
+        console.log('error.message:', error.message)
       })
+    },
+    clearNotes(){
+      this.notes = []
+      if(getNotesSnapshot) getNotesSnapshot() //unsubscribe for any active listener
     },
     async addNote(newNoteContent) {
       let currentDate = new Date().getTime(),

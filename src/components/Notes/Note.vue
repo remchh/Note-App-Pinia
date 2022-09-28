@@ -14,7 +14,7 @@
     <footer class="card-footer">
       <RouterLink
         :to="`/editNote/${ note.id }`"
-        class="card-footer-item has-text-success-light"
+        class="card-footer-item has-text-warning"
         href="#"
       >
         Edit
@@ -22,7 +22,7 @@
       
       <a
         @click.prevent="modals.deleteNote = true"
-        class="card-footer-item has-text-success-light"
+        class="card-footer-item has-text-warning"
         href="#"
       >
         Delete

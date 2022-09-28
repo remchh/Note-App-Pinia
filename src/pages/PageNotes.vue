@@ -54,10 +54,6 @@ import { useWatchCharacters } from '@/use/useWatchCharacters'
 
 const storeNotes = useStoreNotes()
 
-onMounted(() => {
-  storeNotes.getNotes()
-})
-
 const newNote = ref('')
 
 const addEditNoteRef = ref(null)

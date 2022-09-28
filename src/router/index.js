@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-
+import { useStoreAuth } from '@/stores/storeAuth'
 import PageNotes from '@/pages/PageNotes.vue'
 import PageEditNote from '@/pages/PageEditNote.vue'
 import PageStats from '@/pages/PageStats.vue'
@@ -31,6 +31,17 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach(async (to, from) => {
+  const storeAuth = useStoreAuth()
+  console.log('to:', to)
+  if(!storeAuth.user.id && to.name !== 'auth'){
+    return {name: 'auth'}
+  }
+  if(storeAuth.user.id && to.name === 'auth'){
+    return false
+  }
 })
 
 export default router
