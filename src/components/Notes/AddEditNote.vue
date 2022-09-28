@@ -12,8 +12,8 @@
     <div class="field">
       <div class="control">
         <textarea
-          v-model="modelValue"
-          @input="$emit('update:modelValue', modelValue)"
+          :value="modelValue"
+          @input="$emit('update:modelValue', $event.target.value)"
           class="textarea"
           ref="textareaRef"
           :placeholder="placeholder"
